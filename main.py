@@ -30,4 +30,12 @@ def mocks():
     return jsonify(items=news_list)
 
 
+@app.route("/")
+@app.route("/index")
+def hello():
+    """ hello world
+    """
+    return 'hello world'
+
+
 app.run()
