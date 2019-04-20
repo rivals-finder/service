@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
-@app.route('/mock')
+@app.route('/mock', methods=['GET'])
 def mocks():
     """
     Метод для MOCK-данных
@@ -30,7 +30,7 @@ def mocks():
         },
     ]
 
-    return jsonify(items=news_list)
+    return jsonify(items=news_list), 200, {'Content-Type': 'application/json; charset=utf-8'}
 
 
 @app.route('/')
