@@ -187,24 +187,7 @@ class Platform:
         return raw_data
 
 
-# TODO: Написть реализацию получения новостей через класс Platform
-# прогонять результат через парсер (который так же нужно реализовать)
-# возвращать все по роутингу /news
-# хорошо было бы разобраться с роутингом вида /news/{batch_size},
-# чтобы возвращать запрошенное количество новостей
-
-@app.route('/news')
-def news():
-    platform = Platform()
-    news_list = platform.rpc('Event.ListWallWithPosition', {
-                             'ДопПоля': [],
-                             'Фильтр': platform.record([{GROUP_ID: ('Channel', 'string')}]),
-                             'Сортировка': None,
-                             'Навигация': platform.navigation(0, 10, 'true')
-                             })
-    return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list])
-
-
+@app.route('/news/')
 @app.route('/news/<batch_size>')
 def news_size(batch_size=10):
     platform = Platform()
