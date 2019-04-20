@@ -1,4 +1,6 @@
 import requests
+import json
+import re
 from flask import Flask, jsonify
 
 app = Flask(__name__)
@@ -57,20 +59,23 @@ class NewsInfoParser:
         self.date_time = self.get_str(news, 'LentaDateTime')
         self.news_guid = self.get_str(news, 'Object')
 
-    def get_str(self, raw_data, field):
-        # Тут забираются из словаря эти поля, приводятся к строке и делается re.sub
-        pass
+    @staticmethod
+    def get_str(event, key):
+        return re.sub(r'<.*?>', r'', str(event[key])) if key in event and event[key] is not None else ''
 
     def get_json(self):
-        # тут делается return json.dumps({'id':1, ...})
-        # по примеру моков
-        pass
+        return json.dumps({
+            'id'   : self.news_guid,
+            'title': self.title,
+            'text' : self.brief,
+            'date' : self.date_time,
+            'link' : self.LINK_PREFIX.format(self.news_guid)
+        }, ensure_ascii=False)
 
     # TODO: Написать код, который из данных с облака забирает только необходимое
     # 1) безопасно забирает данные, делая из html-верстки plain-text
     # 2) собирает из списка данных JSON объект в формате оговоренного API
     # 3) Ссылка клеится как LINK_PREFIX.format(news_guid), где news_guid - из поля Object
-    pass
 
 
 class Platform:
@@ -202,7 +207,5 @@ def news():
                              'Сортировка': None,
                              'Навигация': platform.navigation(0, 10, 'true')
                              })
-    return jsonify(items=news_list)
+    return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list])
 
-
-app.run()
