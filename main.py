@@ -142,8 +142,13 @@ class Platform:
         :param has_more: Параметр наличия данных кроме возвращаемых
         :return: rpc-record с навигацией
         """
-        # TODO: Написать реализацию navigaion (используйте record)
-        return None
+        return self.record(
+            [
+                {page: ('Страница', 'int')},
+                {page_size: ('РазмерСтраницы', 'int')},
+                {has_more: ('has_more', 'bool')}
+            ]
+        )
 
     def parse_result(self, raw_data):
         """
@@ -172,4 +177,4 @@ class Platform:
 # чтобы возвращать запрошенное количество новостей
 
 platform = Platform()
-print(dir(platform))
+print(platform.navigation(0, 10, 'true'))
