@@ -176,11 +176,16 @@ class Platform:
 # хорошо было бы разобраться с роутингом вида /news/{batch_size},
 # чтобы возвращать запрошенное количество новостей
 
-platform = Platform()
-print(
-platform.rpc('Event.ListWallWithPosition', {
-    'ДопПоля': [],
-    'Фильтр': platform.record([{GROUP_ID: ('Channel', 'string')}]),
-    'Сортировка': None,
-    'Навигация': platform.navigation(0, 10, 'true')
-}))
+@app.route('/news')
+def news():
+    platform = Platform()
+    news_list = platform.rpc('Event.ListWallWithPosition', {
+                             'ДопПоля': [],
+                             'Фильтр': platform.record([{GROUP_ID: ('Channel', 'string')}]),
+                             'Сортировка': None,
+                             'Навигация': platform.navigation(0, 10, 'true')
+                             })
+    return jsonify(items=news_list)
+
+
+app.run()
