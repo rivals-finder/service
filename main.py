@@ -27,7 +27,7 @@ def mocks():
         },
     ]
 
-    return jsonify(items=news_list), 200, {'Content-Type': 'application/json; charset: utf-8'}
+    return jsonify(items=news_list), 200, {'Content-Type': 'application/json; charset=utf-8'}
 
 
 @app.route('/')
