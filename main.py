@@ -1,4 +1,3 @@
-import json
 import requests
 import re
 from flask import Flask, jsonify
@@ -64,13 +63,13 @@ class NewsInfoParser:
         return re.sub(r'<.*?>', r'', str(event[key])) if key in event and event[key] is not None else ''
 
     def get_json(self):
-        return json.loads(json.dumps({
+        return {
             'id'   : self.news_guid,
             'title': self.title,
             'text' : self.brief,
             'date' : self.date_time,
             'link' : self.LINK_PREFIX.format(self.news_guid)
-        }, ensure_ascii=False))
+        }
 
 
 class Platform:
@@ -197,4 +196,5 @@ def news_size(batch_size=10):
                              'Сортировка': None,
                              'Навигация': platform.navigation(0, batch_size, 'true')
                              })
-    return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list])
+    return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list]), 200, \
+           {'Content-Type': 'application/json; charset=utf-8'}
