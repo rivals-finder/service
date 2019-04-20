@@ -177,4 +177,10 @@ class Platform:
 # чтобы возвращать запрошенное количество новостей
 
 platform = Platform()
-print(platform.navigation(0, 10, 'true'))
+print(
+platform.rpc('Event.ListWallWithPosition', {
+    'ДопПоля': [],
+    'Фильтр': platform.record([{GROUP_ID: ('Channel', 'string')}]),
+    'Сортировка': None,
+    'Навигация': platform.navigation(0, 10, 'true')
+}))
