@@ -49,6 +49,23 @@ class NewsInfoParser:
     # Константа для формирования ссылки
     LINK_PREFIX = 'https://fix-online.sbis.ru/news/{}'
 
+    # Тут нужно описать поля класса
+
+    def __init__(self, news):
+        self.title = self.get_str(news['RecordNews'], 'Title')
+        self.brief = self.get_str(news['RecordNews'], 'Brief')
+        self.date_time = self.get_str(news, 'LentaDateTime')
+        self.news_guid = self.get_str(news, 'Object')
+
+    def get_str(self, raw_data, field):
+        # Тут забираются из словаря эти поля, приводятся к строке и делается re.sub
+        pass
+
+    def get_json(self):
+        # тут делается return json.dumps({'id':1, ...})
+        # по примеру моков
+        pass
+
     # TODO: Написать код, который из данных с облака забирает только необходимое
     # 1) безопасно забирает данные, делая из html-верстки plain-text
     # 2) собирает из списка данных JSON объект в формате оговоренного API
