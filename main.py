@@ -1,4 +1,3 @@
-# TODO: добавить requirements, чтобы не уронить Heroku
 import requests
 from flask import Flask, jsonify
 
@@ -110,7 +109,7 @@ class Platform:
 
         # TODO: Нужна обработка результата, на случаи отказа ответа от облака и других исключений
         # Результат обернуть в вызов self.parse_result и вернуть
-        return None
+        return self.parse_result(response.result)
 
     def record(self, list_with_info):
         """
@@ -170,3 +169,5 @@ class Platform:
 # хорошо было бы разобраться с роутингом вида /news/{batch_size},
 # чтобы возвращать запрошенное количество новостей
 
+platform = Platform()
+print(dir(platform))
