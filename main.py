@@ -1,5 +1,4 @@
 import requests
-import json
 import re
 from flask import Flask, jsonify
 
@@ -64,18 +63,13 @@ class NewsInfoParser:
         return re.sub(r'<.*?>', r'', str(event[key])) if key in event and event[key] is not None else ''
 
     def get_json(self):
-        return json.dumps({
+        return {
             'id'   : self.news_guid,
             'title': self.title,
             'text' : self.brief,
             'date' : self.date_time,
             'link' : self.LINK_PREFIX.format(self.news_guid)
-        }, ensure_ascii=False)
-
-    # TODO: Написать код, который из данных с облака забирает только необходимое
-    # 1) безопасно забирает данные, делая из html-верстки plain-text
-    # 2) собирает из списка данных JSON объект в формате оговоренного API
-    # 3) Ссылка клеится как LINK_PREFIX.format(news_guid), где news_guid - из поля Object
+        }
 
 
 class Platform:
@@ -209,3 +203,4 @@ def news():
                              })
     return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list])
 
+# @app.route('/news)
