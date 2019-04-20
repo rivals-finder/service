@@ -186,8 +186,8 @@ class Platform:
         return raw_data
 
 
-@app.route('/news/')
-@app.route('/news/<batch_size>')
+@app.route('/news/', methods=['GET'])
+@app.route('/news/<batch_size>', methods=['GET'])
 def news_size(batch_size=10):
     platform = Platform()
     news_list = platform.rpc('Event.ListWallWithPosition', {
@@ -196,5 +196,5 @@ def news_size(batch_size=10):
                              'Сортировка': None,
                              'Навигация': platform.navigation(0, batch_size, 'true')
                              })
-    return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list]), 200, \
+    return jsonify(items=[NewsInfoParser(item).get_json() for item in news_list]), 200,\
            {'Content-Type': 'application/json; charset=utf-8'}
