@@ -100,16 +100,18 @@ class Platform:
         :param service: Сервис, на который производится вызов (service по умолчанию)
         :return: response result
         """
-
         response = self.session.post(
             'https://fix-online.sbis.ru/{}/'.format(service),
             headers={"Content-Type": "application/json; charset=utf-8", "Accept": "application/json"},
             json={"jsonrpc": "2.0", "protocol": 4, "method": method, "params": params}
-        ).json()
-
-        # TODO: Нужна обработка результата, на случаи отказа ответа от облака и других исключений
-        # Результат обернуть в вызов self.parse_result и вернуть
-        return self.parse_result(response.result)
+        )
+        try:
+            response = response.json()
+            result = self.parse_result(response['result'])
+        except Exception as ex:
+            print('Произошла ошибка. Exception: {}'.format(ex))
+            raise response
+        return result
 
     def record(self, list_with_info):
         """
